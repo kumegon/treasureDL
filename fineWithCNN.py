@@ -48,7 +48,7 @@ if __name__ == '__main__':
         TRAIN_DATA,
         target_size=(224, 224),
         batch_size=32,
-        classes=[map(str, range(len(items)))])
+        classes=[map(str, range(NUM_CLASSES))])
 
     test_datagen = ImageDataGenerator(
         rescale=1./255,
@@ -57,7 +57,7 @@ if __name__ == '__main__':
         TEST_DATA,
         target_size=(224, 224),
         batch_size=32,
-        classes=[map(str, range(len(items)))])
+        classes=[map(str, range(NUM_CLASSES))])
 
 
     input_tensor = Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 3))
