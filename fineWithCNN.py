@@ -84,11 +84,11 @@ if __name__ == '__main__':
     checkpoint = ModelCheckpoint('./data/' + data_directory + '/model/' + bottom_model_name + '_withCNN.h5', monitor='val_acc', verbose=1, save_best_only=True, mode='max')
     model.fit_generator(
         train_data,
-        samples_per_epoch=5000,
-        nb_epoch=50,
+        samples_per_epoch=1000,
+        nb_epoch=500,
         callbacks=[checkpoint],
         validation_data=test_data,
-        nb_val_samples=1000)
+        nb_val_samples=100)
 
 
 
