@@ -61,11 +61,14 @@ if __name__ == '__main__':
     input_tensor = Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 3))
     if bottom_model_name == 'vgg':
         bottom_model = VGG16(include_top=False, weights='imagenet', input_tensor=input_tensor)
+        for layer in bottom_model.layers[:15]:
+            layer.trainable = False
     elif(bottom_model_name == 'resnet'):
         bottom_model = ResNet50(include_top=False, weights='imagenet', input_tensor=input_tensor)
     elif(bottom_model_name == 'inception'):
         bottom_model = InceptionV3(include_top=False, weights='imagenet', input_tensor=input_tensor)
-
+        for layer in bottom_model.layers[-22:]:
+            layer.trainable = False
 
     top_model = Sequential()
     top_model.add(Flatten(input_shape=bottom_model.output_shape[1:]))
@@ -75,8 +78,6 @@ if __name__ == '__main__':
 
     model = Model(input=bottom_model.input, output=top_model(bottom_model.output))
 
-    for layer in model.layers[:15]:
-        layer.trainable = False
     if(os.path.exists('./data/' + data_directory + '/model/' + bottom_model_name + '_withCNN.h5')):
         model.load_weights(os.path.join('./data/' + data_directory + '/model/' + bottom_model_name + '_withCNN.h5'))
 
