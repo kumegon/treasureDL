@@ -39,8 +39,8 @@ if __name__ == '__main__':
 
     #plot(bottom_model, to_file=sys.argv[1]+'_model.png')
     #print(bottom_model.get_layer('res5c_branch2b'))
-    #bottom_model.summary()
-    print(bottom_model.layers[-22:])
+    bottom_model.summary()
+
 
 
 
