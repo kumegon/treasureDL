@@ -15,6 +15,8 @@ import numpy as np
 import os, os.path
 import csv
 from keras.applications.vgg16 import VGG16
+from keras.applications.resnet50 import ResNet50
+from keras.applications.inception_v3 import InceptionV3
 
 data_directory = 'treasure'
 bottom_model_name = sys.argv[1]
@@ -39,6 +41,8 @@ if __name__ == '__main__':
         bottom_model = VGG16(include_top=False, weights='imagenet', input_tensor=input_tensor)
     elif(bottom_model_name == 'resnet'):
         bottom_model = ResNet50(include_top=False, weights='imagenet', input_tensor=input_tensor)
+    elif(bottom_model_name == 'inception'):
+        bottom_model = InceptionV3(include_top=False, weights='imagenet', input_tensor=input_tensor)
 
 
     top_model = Sequential()

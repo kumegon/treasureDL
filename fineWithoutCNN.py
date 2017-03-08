@@ -4,8 +4,6 @@
 
 from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Convolution2D, Flatten, MaxPooling2D, Dropout, Input
-from keras.applications.vgg16 import VGG16
-from keras.applications.resnet50 import ResNet50
 from keras.utils.np_utils import to_categorical
 from keras import optimizers
 from keras.layers import InputLayer
@@ -16,7 +14,9 @@ import sys
 import numpy as np
 import os, os.path
 import csv
-
+from keras.applications.vgg16 import VGG16
+from keras.applications.resnet50 import ResNet50
+from keras.applications.inception_v3 import InceptionV3
 
 data_directory = 'treasure'
 bottom_model_name = sys.argv[1]
@@ -63,6 +63,8 @@ if __name__ == '__main__':
         bottom_model = VGG16(include_top=False, weights='imagenet', input_tensor=input_tensor)
     elif(bottom_model_name == 'resnet'):
         bottom_model = ResNet50(include_top=False, weights='imagenet', input_tensor=input_tensor)
+    elif(bottom_model_name == 'inception'):
+        bottom_model = InceptionV3(include_top=False, weights='imagenet', input_tensor=input_tensor)
 
     top_model = Sequential()
     top_model.add(Flatten(input_shape=bottom_model.output_shape[1:]))
@@ -81,8 +83,8 @@ if __name__ == '__main__':
     save = ModelCheckpoint('./data/' + data_directory + '/model/model5.h5', monitor='val_acc', verbose=1, save_best_only=False)
     model.fit_generator(
         train_data,
-        samples_per_epoch=500,
-        nb_epoch=50,
+        samples_per_epoch=1000,
+        nb_epoch=500,
         callbacks=[checkpoint],
         validation_data=test_data,
         nb_val_samples=100)
