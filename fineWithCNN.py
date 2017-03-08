@@ -77,7 +77,10 @@ if __name__ == '__main__':
 
     for layer in model.layers[:15]:
         layer.trainable = False
-
+    try:
+        model.load_weights(os.path.join('./data/' + data_directory + '/model/' + bottom_model_name + '_withCNN.h5'))
+    except:
+        pass
     model.compile(loss='categorical_crossentropy',
                   optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
                   metrics=['accuracy'])
