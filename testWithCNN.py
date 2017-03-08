@@ -59,7 +59,7 @@ if __name__ == '__main__':
     top_model.add(Dense(NUM_CLASSES, activation='softmax'))
 
     model = Model(input=bottom_model.input, output=top_model(bottom_model.output))
-    model.load_weights(os.path.join('./data/' + data_directory + '/model/model3.h5'))
+    model.load_weights(os.path.join('./data/' + data_directory + '/model/' + bottom_model_name + '.h5'))
     for layer in model.layers:
         layer.trainable = False
     for layer in top_model.layers:
