@@ -37,27 +37,25 @@ if __name__ == '__main__':
         os.mkdir('./data/' + data_directory + '/model')
     train_datagen = ImageDataGenerator(
         rescale=1./255,
-        featurewise_center=False,
-        featurewise_std_normalization=False,
-        rotation_range=40,
+        rotation_range=20,
         width_shift_range=0.2,
         height_shift_range=0.2,
         horizontal_flip=True,
         dim_ordering='tf')
     train_data = train_datagen.flow_from_directory(
         TRAIN_DATA,
-        target_size=(224, 224),
-        batch_size=32,
-        classes=[map(str, range(NUM_CLASSES))])
+        target_size=(IMAGE_SIZE, IMAGE_SIZE),
+        batch_size=20,
+        classes=map(str, range(NUM_CLASSES)))
 
     test_datagen = ImageDataGenerator(
         rescale=1./255,
         dim_ordering='tf')
     test_data = test_datagen.flow_from_directory(
         TEST_DATA,
-        target_size=(224, 224),
-        batch_size=32,
-        classes=[map(str, range(NUM_CLASSES))])
+        target_size=(IMAGE_SIZE, IMAGE_SIZE),
+        batch_size=20,
+        classes=map(str, range(NUM_CLASSES)))
 
 
     input_tensor = Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 3))
