@@ -83,7 +83,7 @@ if __name__ == '__main__':
     model.compile(loss='categorical_crossentropy',
                   optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
                   metrics=['accuracy'])
-    checkpoint = ModelCheckpoint('./data/' + data_directory + '/model/' + bottom_model_name + '.h5', monitor='val_acc', verbose=1, save_best_only=True, mode='max')
+    checkpoint = ModelCheckpoint('./data/' + data_directory + '/model/' + bottom_model_name + '_withCNN.h5', monitor='val_acc', verbose=1, save_best_only=True, mode='max')
     model.fit_generator(
         train_data,
         samples_per_epoch=5000,

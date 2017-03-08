@@ -24,9 +24,9 @@ We can train treasures' images using this script.
 
 3. Starting learning.
     1. I wrote two programs, fineWithCNN.py, fineWithoutCNN.py.
-    2. You can start them like this.
+    2. You can start them like this(you can select those models, vgg, resnet, inception.
         ```
-        $python fineWithCNN.py
+        $python fineWithCNN.py vgg
         ```
 
 
