@@ -65,7 +65,7 @@ if __name__ == '__main__':
                   optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
                   metrics=['accuracy'])
     model.fit_generator(
-        train_data,
+        test_data,
         samples_per_epoch=20,
         nb_epoch=1,
         validation_data=test_data,
