@@ -17,21 +17,21 @@ import os, os.path
 import csv
 from keras.applications.vgg16 import VGG16
 
+data_directory = 'treasure'
 
-
-f = open('./data/' + sys.argv[1] + '/list.csv','r')
+f = open('./data/' + data_directory + '/list.csv','r')
 items = [item[0] for item in csv.reader(f)]
 f.close()
 NUM_CLASSES = len(items)
 IMAGE_SIZE = 224
 IMAGE_PIXELS = IMAGE_SIZE*IMAGE_SIZE*3
-TRAIN_DATA = './data/' + sys.argv[1] +'/train'
-TEST_DATA = './data/' + sys.argv[1] +'/test'
+TRAIN_DATA = './data/' + data_directory +'/train'
+TEST_DATA = './data/' + data_directory +'/test'
 
 
 if __name__ == '__main__':
-    if not os.path.exists('./data/' + sys.argv[1] + '/model'):
-        os.mkdir('./data/' + sys.argv[1] + '/model')
+    if not os.path.exists('./data/' + data_directory + '/model'):
+        os.mkdir('./data/' + data_directory + '/model')
     train_datagen = ImageDataGenerator(
         rescale=1./255,
         rotation_range=20,
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     model.compile(loss='categorical_crossentropy',
                   optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
                   metrics=['accuracy'])
-    checkpoint = ModelCheckpoint('./data/' + sys.argv[1] + '/model/model4.h5', monitor='val_acc', verbose=1, save_best_only=False)
+    checkpoint = ModelCheckpoint('./data/' + data_directory + '/model/model4.h5', monitor='val_acc', verbose=1, save_best_only=False)
     model.fit_generator(
         train_data,
         samples_per_epoch=100,

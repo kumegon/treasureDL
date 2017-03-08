@@ -17,22 +17,22 @@ import os, os.path
 import csv
 from keras.applications.vgg16 import VGG16
 
+data_directory = 'treasure'
 
-
-f = open('./data/' + sys.argv[1] + '/list.csv','r')
+f = open('./data/' + data_directory + '/list.csv','r')
 items = [item[0] for item in csv.reader(f)]
 f.close()
 NUM_CLASSES = len(items)
 IMAGE_SIZE = 224
 IMAGE_PIXELS = IMAGE_SIZE*IMAGE_SIZE*3
-TRAIN_DATA = './data/' + sys.argv[1] +'/train'
-TEST_DATA = './data/' + sys.argv[1] +'/test'
+TRAIN_DATA = './data/' + data_directory +'/train'
+TEST_DATA = './data/' + data_directory +'/test'
 
 
 if __name__ == '__main__':
-    if not os.path.exists('./data/' + sys.argv[1] + '/model'):
-        os.mkdir('./data/' + sys.argv[1] + '/model')
-    input_images = np.asarray(map(lambda x: cv2.resize(cv2.imread(x), (IMAGE_SIZE, IMAGE_SIZE))/255  , sys.argv[2:]))
+    if not os.path.exists('./data/' + data_directory + '/model'):
+        os.mkdir('./data/' + data_directory + '/model')
+    input_images = np.asarray(map(lambda x: cv2.resize(cv2.imread(x), (IMAGE_SIZE, IMAGE_SIZE))/255  , sys.argv[1:]))
 
 
     input_tensor = Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 3))
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     top_model.add(Dense(NUM_CLASSES, activation='softmax'))
 
     model = Model(input=vgg_model.input, output=top_model(vgg_model.output))
-    model.load_weights(os.path.join('./data/' + sys.argv[1] + '/model/model3.h5'))
+    model.load_weights(os.path.join('./data/' + data_directory + '/model/model3.h5'))
 
 
     model.compile(loss='categorical_crossentropy',
