@@ -67,7 +67,7 @@ if __name__ == '__main__':
         bottom_model = ResNet50(include_top=False, weights='imagenet', input_tensor=input_tensor)
     elif(bottom_model_name == 'inception'):
         bottom_model = InceptionV3(include_top=False, weights='imagenet', input_tensor=input_tensor)
-        for layer in bottom_model.layers[-22:]:
+        for layer in bottom_model.layers[:-22]:
             layer.trainable = False
 
     top_model = Sequential()
