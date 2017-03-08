@@ -4,20 +4,22 @@
 
 from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Convolution2D, Flatten, MaxPooling2D, Dropout, Input
+from keras.applications.vgg16 import VGG16
+from keras.applications.resnet50 import ResNet50
 from keras.utils.np_utils import to_categorical
 from keras import optimizers
 from keras.layers import InputLayer
-from keras.callbacks import ModelCheckpoint
+from keras.callbacks import ModelCheckpoint, TensorBoard
 from keras.models import load_model
 from keras.preprocessing.image import ImageDataGenerator
 import sys
-import cv2
 import numpy as np
 import os, os.path
 import csv
-from keras.applications.vgg16 import VGG16
+
 
 data_directory = 'treasure'
+bottom_model_name = sys.argv[1]
 
 f = open('./data/' + data_directory + '/list.csv','r')
 items = [item[0] for item in csv.reader(f)]
@@ -56,16 +58,19 @@ if __name__ == '__main__':
 
 
     input_tensor = Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 3))
-    vgg_model = VGG16(include_top=False, weights='imagenet', input_tensor=input_tensor)
 
+    if bottom_model_name == 'vgg':
+        bottom_model = VGG16(include_top=False, weights='imagenet', input_tensor=input_tensor)
+    elif(bottom_model_name == 'resnet'):
+        bottom_model = ResNet50(include_top=False, weights='imagenet', input_tensor=input_tensor)
 
     top_model = Sequential()
-    top_model.add(Flatten(input_shape=vgg_model.output_shape[1:]))
+    top_model.add(Flatten(input_shape=bottom_model.output_shape[1:]))
     top_model.add(Dense(256, activation='relu'))
     top_model.add(Dropout(0.5))
     top_model.add(Dense(NUM_CLASSES, activation='softmax'))
 
-    model = Model(input=vgg_model.input, output=top_model(vgg_model.output))
+    model = Model(input=bottom_model.input, output=top_model(bottom_model.output))
 
     for layer in model.layers:
         layer.trainable = False
@@ -73,7 +78,7 @@ if __name__ == '__main__':
     model.compile(loss='categorical_crossentropy',
                   optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
                   metrics=['accuracy'])
-    checkpoint = ModelCheckpoint('./data/' + data_directory + '/model/model4.h5', monitor='val_acc', verbose=1, save_best_only=False)
+    save = ModelCheckpoint('./data/' + data_directory + '/model/model5.h5', monitor='val_acc', verbose=1, save_best_only=False)
     model.fit_generator(
         train_data,
         samples_per_epoch=500,
