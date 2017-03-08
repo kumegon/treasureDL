@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
     top_model = Sequential()
     top_model.add(Flatten(input_shape=vgg_model.output_shape[1:]))
-    top_model.add(Dense(1024, activation='relu'))
+    top_model.add(Dense(256, activation='relu'))
     top_model.add(Dropout(0.5))
     top_model.add(Dense(NUM_CLASSES, activation='softmax'))
 
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     checkpoint = ModelCheckpoint('./data/' + data_directory + '/model/model4.h5', monitor='val_acc', verbose=1, save_best_only=False)
     model.fit_generator(
         train_data,
-        samples_per_epoch=100,
+        samples_per_epoch=500,
         nb_epoch=50,
         callbacks=[checkpoint],
         validation_data=test_data,
