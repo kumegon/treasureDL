@@ -81,7 +81,7 @@ if __name__ == '__main__':
     model = Model(input=bottom_model.input, output=top_model(bottom_model.output))
 
     if(os.path.exists('./data/' + data_directory + '/model/' + bottom_model_name + '_withCNN.h5')):
-        model.load_weights(os.path.join('./data/' + data_directory + '/model/' + bottom_model_name + '_withCNN.h5'))
+        model.load_weights(os.path.join('./data/' + data_directory + '/model/' + bottom_model_name + '_withCNN2.h5'))
 
     model.compile(loss='categorical_crossentropy',
                   optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
