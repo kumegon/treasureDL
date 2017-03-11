@@ -29,7 +29,7 @@ NUM_CLASSES = len(items)
 IMAGE_SIZE = 224
 IMAGE_PIXELS = IMAGE_SIZE*IMAGE_SIZE*3
 TRAIN_DATA = './data/' + data_directory +'/train'
-TEST_DATA = './data/' + data_directory +'/test'
+TEST_DATA = './data/' + data_directory +'/image'
 
 
 if __name__ == '__main__':
@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
     model = Model(input=bottom_model.input, output=top_model(bottom_model.output))
 
-    if(os.path.exists('./data/' + data_directory + '/model/' + bottom_model_name + '_withCNN.h5')):
+    if(os.path.exists('./data/' + data_directory + '/model/' + bottom_model_name + '_withCNN2.h5')):
         model.load_weights(os.path.join('./data/' + data_directory + '/model/' + bottom_model_name + '_withCNN2.h5'))
 
     model.compile(loss='categorical_crossentropy',
@@ -93,7 +93,7 @@ if __name__ == '__main__':
         nb_epoch=500,
         callbacks=[checkpoint],
         validation_data=test_data,
-        nb_val_samples=100)
+        nb_val_samples=300)
 
 
 

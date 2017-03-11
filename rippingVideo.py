@@ -6,24 +6,19 @@ import sys
 import csv
 from numpy.random import *
 import os
+import zipfile
 
 data_directory = 'treasure'
-per_image = 2
+per_image = 10
 
 def writeImg(frame, n, i):
-  if rand() > 0.2:
-    image_name = "data/%s/train/%d/%04d.png"  % (data_directory, n, i/per_image)
-  else:
-    image_name = "data/%s/test/%d/%04d.png"  % (data_directory, n, i/per_image)
-  cv2.imwrite(image_name, frame)
+  image_name = "data/%s/train/%d/%04d.png"  % (data_directory, n, i/per_image)
+
+  cv2.imwrite(image_name, cv2.resize(frame, (320,320)))
 
 def Video2Image(items, n):
   try:
     os.mkdir("data/%s/train/%d"  % (data_directory, n))
-  except:
-    pass
-  try:
-    os.mkdir("data/%s/test/%d"  % (data_directory, n))
   except:
     pass
   print("start %s" % (items[n],))
@@ -47,11 +42,7 @@ def Video2Image(items, n):
 
 def main():
   try:
-    os.mkdir('data/' + data_directory + '/train')
-  except:
-    pass
-  try:
-    os.mkdir('data/' + data_directory + '/test')
+    os.mkdir("data/%s/train/"  % (data_directory))
   except:
     pass
   try:
