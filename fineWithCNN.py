@@ -29,7 +29,7 @@ NUM_CLASSES = len(items)
 IMAGE_SIZE = 224
 IMAGE_PIXELS = IMAGE_SIZE*IMAGE_SIZE*3
 TRAIN_DATA = './data/' + data_directory +'/train'
-TEST_DATA = './data/' + data_directory +'/test'
+TEST_DATA = './data/' + data_directory +'/image'
 
 
 if __name__ == '__main__':
@@ -93,7 +93,7 @@ if __name__ == '__main__':
         nb_epoch=500,
         callbacks=[checkpoint],
         validation_data=test_data,
-        nb_val_samples=100)
+        nb_val_samples=300)
 
 
 
