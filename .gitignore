@@ -1,4 +1,6 @@
 data/*
 data.zip
 *.png
-%.jpg
+*.jpg
+*.hdf5
+*.json
