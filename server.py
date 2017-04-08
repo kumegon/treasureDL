@@ -10,6 +10,9 @@ from keras.preprocessing.image import load_img, img_to_array
 import tensorflow as tf
 import os.path
 import sys
+import base64
+from PIL import Image
+from io import BytesIO
 
 
 host = '127.0.0.1' #お使いのサーバーのホスト名を入れます
@@ -50,7 +53,9 @@ with tf.Graph().as_default():
         server.send_message_to_all("Hey all, a new client has joined us")
 
     def send_msg_allclient(client, server,message):
-        input_image = np.expand_dims(img_to_array(load_img('0000.jpg', target_size=(IMAGE_SIZE,IMAGE_SIZE)))/255,axis=0)
+        im = img_to_array(Image.open(BytesIO(base64.b64decode(message))).resize((IMAGE_SIZE,IMAGE_SIZE)))/255
+        #img_to_array(load_img(dec_file, target_size=(IMAGE_SIZE,IMAGE_SIZE)))/255
+        input_image = np.expand_dims(im,axis=0)
         result = np.argmax(model.predict(input_image, verbose=1))
         '''
         print(result)
