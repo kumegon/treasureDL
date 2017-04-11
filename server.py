@@ -13,12 +13,20 @@ import sys
 import base64
 from PIL import Image
 from io import BytesIO
+import csv
 
 
 host = '127.0.0.1' #お使いのサーバーのホスト名を入れます
 port = 8080 #クライアントと同じPORTをしてあげます
 
-NUM_CLASSES = 9
+data_directory = 'treasure'
+bottom_model_name = 'resnet'
+
+f = open('./data/' + data_directory + '/list.csv','r')
+items = [item[0] for item in csv.reader(f)]
+f.close()
+NUM_CLASSES = len(items)
+
 IMAGE_SIZE = 224
 IMAGE_PIXELS = IMAGE_SIZE*IMAGE_SIZE*3
 
@@ -53,17 +61,17 @@ with tf.Graph().as_default():
         server.send_message_to_all("Hey all, a new client has joined us")
 
     def send_msg_allclient(client, server,message):
-        im = img_to_array(Image.open(BytesIO(base64.b64decode(message))).resize((IMAGE_SIZE,IMAGE_SIZE)))/255
-        #img_to_array(load_img(dec_file, target_size=(IMAGE_SIZE,IMAGE_SIZE)))/255
-        input_image = np.expand_dims(im,axis=0)
-        result = np.argmax(model.predict(input_image, verbose=1))
-        '''
-        print(result)
-        '''
-        server.send_message_to_all("Hey all:"+ str(result))
+        print(message)
+        try:
+          im = img_to_array(Image.open(BytesIO(base64.b64decode(message))).resize((IMAGE_SIZE,IMAGE_SIZE)))/255
+          input_image = np.expand_dims(im,axis=0)
+          result = np.argmax(model.predict(input_image, verbose=1))
+
+          server.send_message_to_all(items[result])
+        except:
+          server.send_message_to_all("エラー")
 
     server = WebsocketServer(port, host=host)
-    server.set_fn_new_client(new_client)
     server.set_fn_message_received(send_msg_allclient)
     server.run_forever()
 

@@ -15,8 +15,11 @@ import sys
 data_directory = 'treasure'
 bottom_model_name = 'resnet'
 
+f = open('./data/' + data_directory + '/list.csv','r')
+items = [item[0] for item in csv.reader(f)]
+f.close()
+NUM_CLASSES = len(items)
 
-NUM_CLASSES = 9
 IMAGE_SIZE = 224
 IMAGE_PIXELS = IMAGE_SIZE*IMAGE_SIZE*3
 

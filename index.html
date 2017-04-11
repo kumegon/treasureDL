@@ -1,0 +1,106 @@
+<html>
+<head>
+    <title></title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+  <body>
+
+    <form>
+
+      <input type="file" id="aaa" >
+
+    </form>
+    <div class="preview" /></div>
+    <input type='text' class='result'>
+
+    <script type="text/javascript">
+$(function() {
+  socket = new WebSocket("ws://127.0.0.1:8080/");
+  text = $(".result");
+
+  socket.onmessage = function(e) {
+      var result = e.data;
+      console.log(e.data)
+      text.val(result);
+  }
+  $(function(){
+    //画像ファイルプレビュー表示のイベント追加 fileを選択時に発火するイベントを登録
+    $('form').on('change', 'input[type="file"]', function(e) {
+      var file = e.target.files[0],
+          reader = new FileReader(),
+          $preview = $(".preview");
+          t = this;
+
+      // 画像ファイル以外の場合は何もしない
+      if(file.type.indexOf("image") < 0){
+        return false;
+      }
+
+      // ファイル読み込みが完了した際のイベント登録
+      reader.onload = (function(file) {
+        return function(e) {
+          //既存のプレビューを削除
+          $preview.empty();
+          // .prevewの領域の中にロードした画像を表示するimageタグを追加
+          $preview.append($('<img>').attr({
+                    src: e.target.result,
+                    width: "150px",
+                    class: "preview",
+                    title: file.name
+                }));
+        };
+      })(file);
+
+      reader.readAsDataURL(file);
+    });
+  });
+  var input_file = document.getElementById("aaa");
+
+  // ------------------------------------------------------------
+  // 値が変化した時に実行されるイベント
+  // ------------------------------------------------------------
+  input_file.onchange = function (){
+
+    // ファイルが選択されたか
+    if(!(input_file.value)) return;
+
+    // FileReader クラスに対応しているか
+    if(!(window.FileReader)) return;
+
+    // ------------------------------------------------------------
+    // File オブジェクトを取得（HTML5 世代）
+    // ------------------------------------------------------------
+    // ファイルリストを取得
+    var file_list = input_file.files;
+    if(!file_list) return;
+
+    // 0 番目の File オブジェクトを取得
+    var file = file_list[0];
+    if(!file) return;
+
+    // ------------------------------------------------------------
+    // FileReader オブジェクトを生成
+    // ------------------------------------------------------------
+    var file_reader = new FileReader();
+
+    // ------------------------------------------------------------
+    // 読み込み成功時に実行されるイベント
+    // ------------------------------------------------------------
+    file_reader.onload = function(e){
+
+      // 出力テスト
+      var result = file_reader.result.split(',')[1];
+      socket.send(result);
+    };
+
+    // ------------------------------------------------------------
+    // 読み込みを開始する（Data URI Scheme 文字列を得る）
+    // ------------------------------------------------------------
+    file_reader.readAsDataURL(file);
+  };
+
+});
+    </script>
+
+  </body>
+</html>
