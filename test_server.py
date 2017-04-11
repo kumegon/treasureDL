@@ -100,5 +100,3 @@ with tf.Graph().as_default():
     mainloop = tornado.ioloop.IOLoop.instance()
     mainloop.start() #WebSocketServer起動
 
-
-

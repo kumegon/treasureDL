@@ -17,11 +17,11 @@ port = 8080 #適当なPORTを指定してあげます
 
 
 
-ws = create_connection("ws://127.0.0.1:8080/")
+ws = create_connection("ws://172.31.31.55:8080/")
 while True:
     img = raw_input()
     b64 = open(img,'rb').read().encode('base64')
-    ws.send(b64)
+    ws.send(img)
     time.sleep(1)
     result =  ws.recv()
     print("Received '%s'" % result)

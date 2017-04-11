@@ -18,6 +18,18 @@ $(function() {
   socket = new WebSocket("ws://127.0.0.1:8080/");
   text = $(".result");
 
+  socket.onopen = function(e) {
+    console.log('server connect');
+  }
+
+  socket.onclose = function(e) {
+    console.log('server close');
+  }
+
+  socket.onerror = function(e) {
+    console.log('occured error');
+  }
+
   socket.onmessage = function(e) {
       var result = e.data;
       console.log(e.data)
