@@ -37,7 +37,7 @@ IMAGE_PIXELS = IMAGE_SIZE*IMAGE_SIZE*3
 model_filename = './fine.hdf5'
 
 
-IP = '127.0.0.1'
+IP = '54.199.224.250'
 
 
 #WebSocketがListenするポートを指定
