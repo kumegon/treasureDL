@@ -12,7 +12,7 @@ IMAGE_SIZE = 224
 IMAGE_PIXELS = IMAGE_SIZE*IMAGE_SIZE*3
 
 
-host = '127.0.0.1' #お使いのサーバーのホスト名を入れます
+host = '172.31.31.55' #お使いのサーバーのホスト名を入れます
 port = 8080 #適当なPORTを指定してあげます
 
 

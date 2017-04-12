@@ -56,7 +56,6 @@ class SendWebSocket(tornado.websocket.WebSocketHandler):
 
     #クライアントからメッセージが送られてくると呼び出されるイベント
     def on_message(self, message):
-      print(message)
       try:
         im = img_to_array(Image.open(BytesIO(base64.b64decode(message))).resize((IMAGE_SIZE,IMAGE_SIZE)))/255
         input_image = np.expand_dims(im,axis=0)
@@ -85,10 +84,11 @@ with tf.Graph().as_default():
     model.compile(loss='categorical_crossentropy',
                   optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
                   metrics=['accuracy'])
+    '''
     model.summary()
     input_image = np.expand_dims(img_to_array(load_img('0000.jpg', target_size=(IMAGE_SIZE,IMAGE_SIZE)))/255,axis=0)
     result = np.argmax(model.predict(input_image, verbose=1))
-
+    '''
     print('waiting')
 
     app = tornado.web.Application([
